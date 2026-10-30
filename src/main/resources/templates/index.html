@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sorting Visualizer</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Sorting Algorithm Visualizer</h1>
+
+  <div class="input-row">
+    <label for="arrayInput">Enter array values (comma separated):</label>
+    <input type="text" id="arrayInput" placeholder="e.g., 34, 21, 51, 83, 9" autocomplete="off">
+  </div>
+
+  <div class="controls">
+    <button onclick="runSort('bubble')">Bubble Sort</button>
+    <button onclick="runSort('selection')">Selection Sort</button>
+    <button onclick="runSort('insertion')">Insertion Sort</button>
+  </div>
+
+  <div id="error"></div>
+  <div id="visualizer"></div>
+  <div id="arrayDisplay"></div> <!-- Array values will appear here -->
+
+  <script>
+    // Parse and validate the user-entered array.
+    // Returns null if the field is blank (server will use its demo array).
+    function getArrayInput() {
+      const raw = document.getElementById("arrayInput").value.trim();
+      if (raw === "") return null;
+
+      const parts = raw.split(",").map(s => s.trim()).filter(s => s.length > 0);
+      if (parts.length < 2) {
+        throw new Error("Please enter at least 2 numbers.");
+      }
+
+      const arr = [];
+      for (const part of parts) {
+        const n = Number(part);
+        if (!Number.isInteger(n) || n < 0) {
+          throw new Error('Invalid value "' + part + '". Use whole numbers (0 or more) separated by commas.');
+        }
+        arr.push(n);
+      }
+      return arr;
+    }
+
+    function showError(message) {
+      document.getElementById("error").textContent = message;
+    }
+
+    async function runSort(algo) {
+      showError("");
+
+      let array = null;
+      try {
+        array = getArrayInput();
+      } catch (e) {
+        showError(e.message);
+        return;
+      }
+
+      const body = { algo };
+      if (array) body.array = array;
+
+      const response = await fetch("/sort", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
+      });
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        showError(data.error || "Something went wrong.");
+        return;
+      }
+
+      animateSteps(data);
+    }
+
+    async function animateSteps(steps) {
+      const container = document.getElementById("visualizer");
+      const arrayDisplay = document.getElementById("arrayDisplay");
+      container.innerHTML = "";
+      arrayDisplay.innerHTML = "";
+
+      // Scale bars relative to the largest value so custom arrays fit on screen
+      const maxValue = Math.max(...steps[steps.length - 1]);
+      const maxBarHeight = 380;
+
+      for (let i = 0; i < steps.length; i++) {
+        // Clear previous step
+        container.innerHTML = "";
+        arrayDisplay.innerHTML = "";
+
+        // Draw bars
+        steps[i].forEach(val => {
+          const bar = document.createElement("div");
+          bar.className = "bar";
+          bar.style.height = (maxValue > 0 ? (val / maxValue) * maxBarHeight : 2) + "px";
+          container.appendChild(bar);
+        });
+
+        // Show array as text
+        arrayDisplay.textContent = "Step " + (i+1) + ": " + steps[i].join(", ");
+
+        // Pause before next step
+        await new Promise(r => setTimeout(r, 800));
+      }
+    }
+  </script>
+</body>
+</html>

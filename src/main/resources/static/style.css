@@ -1,0 +1,137 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  background: #121212;
+  margin: 0;
+  padding: 0;
+  color: #e0e0e0;
+}
+
+h1 {
+  margin: 20px;
+  color: #f5f5f5;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+.controls {
+  margin-bottom: 20px;
+}
+
+.input-row {
+  margin-bottom: 15px;
+}
+
+.input-row label {
+  display: block;
+  margin-bottom: 8px;
+  color: #bbbbbb;
+  font-size: 16px;
+}
+
+#arrayInput {
+  width: 320px;
+  max-width: 80%;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: #e0e0e0;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#arrayInput:focus {
+  border-color: #00d4ff;
+}
+
+#error {
+  min-height: 22px;
+  margin-bottom: 10px;
+  color: #ff6b6b;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+button:hover {
+  background: linear-gradient(135deg, #0056b3, #00a3cc);
+  transform: translateY(-2px);
+}
+
+#visualizer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 400px;
+  border: 2px solid #1f1f1f;
+  margin: 20px auto;
+  background: #1e1e1e;
+  padding: 10px;
+  max-width: 90%;
+  overflow-x: auto;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.bar {
+  flex: 0 0 30px;
+  margin: 2px;
+  background: linear-gradient(180deg, #00ff87, #009e4f);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease, transform 0.2s ease;
+}
+
+.bar:hover {
+  transform: scale(1.05);
+  background: linear-gradient(180deg, #00ffcc, #00b383);
+}
+
+#status {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #bbbbbb;
+  font-style: italic;
+}
+
+#speedControl {
+  width: 200px;
+  margin-top: 15px;
+  height: 6px;
+  background: #333;
+  border-radius: 4px;
+  outline: none;
+}
+
+#speedControl::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #00ff87;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#speedControl::-webkit-slider-thumb:hover {
+  background: #00d474;
+}
+
+#arrayDisplay {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
